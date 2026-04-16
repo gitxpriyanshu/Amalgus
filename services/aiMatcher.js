@@ -9,9 +9,8 @@
 export async function findBestMatches(userQuery, products) {
   const API_URL = "https://api.anthropic.com/v1/messages";
   
-  // Note: Ensure your API key is available in your environment.
-  // We use a placeholder here for the user to fill or for the app to pick up.
-  const API_KEY = ""; // Replace with your actual key or use env variable
+  // Reading from Vite environment variable
+  const API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY;
 
   const systemPrompt = `
     You are an expert glass industry consultant for AmalGus, a B2B/B2C marketplace.
@@ -41,7 +40,7 @@ export async function findBestMatches(userQuery, products) {
         "dangerously-allow-the-browser": "true"
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20240620", // Using a standard stable model name
+        model: "claude-3-5-sonnet-20240620",
         max_tokens: 1500,
         system: systemPrompt,
         messages: [

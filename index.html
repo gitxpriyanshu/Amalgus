@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AmalGus | Smart Product Discovery</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- React & Babel CDNs -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -19,268 +15,224 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#0D9488',
-                        'primary-dark': '#0f766e',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    colors: { primary: '#0D9488', 'primary-dark': '#0f766e' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                 }
             }
         }
     </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .progress-bar { transition: width 1s ease-in-out; }
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
 
     <script type="text/babel">
-        // Mocking the imports since we are in a single-file CDN environment
-        // In a real projectized environment, these would be:
-        // import { PRODUCTS } from './data/products.js';
-        // import { findBestMatches } from './services/aiMatcher.js';
-
+        // In a real Vite app, these would be imports. 
+        // For this single-file working demo, we keep them accessible.
+        
         const PRODUCTS = [
             { id: 1, name: "6mm Clear Tempered Glass", category: "Tempered Glass", thickness: 6, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 950, supplier: "Asahi India Glass (AIS)", description: "Safety glass for partitions." },
-            { id: 2, name: "12mm Extra Clear Toughened Glass", category: "Tempered Glass", thickness: 12, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 2100, supplier: "Saint-Gobain India", description: "Heavy-duty for storefronts." },
+            { id: 2, name: "12mm Extra Clear Toughened Glass", category: "Tempered Glass", thickness: 12, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 2100, supplier: "Saint-Gobain India", description: "Heavy-duty storefronts." },
             { id: 3, name: "10.76mm Laminated Safety Glass", category: "Laminated Glass", thickness: 10.76, color: "Clear", coating: "UV Protection", edgeFinish: "Seamed", pricePerSqm: 1850, supplier: "Gold Plus Glass", description: "Security and railings." },
-            { id: 4, name: "24mm Double Glazed Unit", category: "Insulated Glass Unit", thickness: 24, color: "Clear", coating: "Low-E", edgeFinish: "Seamed", pricePerSqm: 3200, supplier: "Sisecam Flat Glass", description: "Thermal insulation." },
-            { id: 5, name: "5mm Silver Mirror", category: "Mirror", thickness: 5, color: "Clear", coating: "None", edgeFinish: "Bevelled", pricePerSqm: 750, supplier: "ModiGuard Glass", description: "Interior mirrors." },
-            { id: 7, name: "Heavy Duty Floor Spring (90kg)", category: "Aluminium Hardware", thickness: 0, color: "Satin", coating: "None", edgeFinish: "Polished", pricePerSqm: 4500, supplier: "Dorma India", description: "Door hardware." },
-            { id: 9, name: "6mm Frosted Tempered Glass", category: "Tempered Glass", thickness: 6, color: "Frosted", coating: "None", edgeFinish: "Polished", pricePerSqm: 1400, supplier: "Saint-Gobain India", description: "Privacy glass." }
+            { id: 4, name: "24mm Double Glazed Unit", category: "Insulated Glass Unit", thickness: 24, color: "Clear", coating: "Low-E", edgeFinish: "Seamed", pricePerSqm: 3200, supplier: "Sisecam Flat Glass", description: "Energy efficiency." },
+            { id: 5, name: "5mm Silver Mirror", category: "Mirror", thickness: 5, color: "Clear", coating: "None", edgeFinish: "Bevelled", pricePerSqm: 750, supplier: "ModiGuard Glass", description: "Interior decor." },
+            { id: 6, name: "8mm Bronze Tinted Glass", category: "Float Glass", thickness: 8, color: "Bronze", coating: "None", edgeFinish: "Seamed", pricePerSqm: 1150, supplier: "Hindusthan National Glass", description: "Glare reduction." },
+            { id: 7, name: "Heavy Duty Floor Spring", category: "Aluminium Hardware", thickness: 0, color: "Satin", coating: "Anti-Rust", edgeFinish: "Polished", pricePerSqm: 4500, supplier: "Dorma India", description: "Door pivots." },
+            { id: 8, name: "Four-Way Spider Fitting", category: "Spider Fittings", thickness: 0, color: "Steel", coating: "None", edgeFinish: "Mirror", pricePerSqm: 1200, supplier: "Ozone Overseas", description: "Structural glazing." },
+            { id: 9, name: "6mm Frosted Tempered Glass", category: "Tempered Glass", thickness: 6, color: "Frosted", coating: "None", edgeFinish: "Polished", pricePerSqm: 1400, supplier: "Saint-Gobain India", description: "Privacy partitions." },
+            { id: 10, name: "19.52mm SGP Laminated Glass", category: "Laminated Glass", thickness: 19.52, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 8500, supplier: "Asahi India Glass (AIS)", description: "Glass floors." },
+            { id: 11, name: "Patch Fitting Set", category: "Aluminium Hardware", thickness: 0, color: "Silver", coating: "None", edgeFinish: "Brushed", pricePerSqm: 2800, supplier: "Hardwyn India", description: "Door fittings." },
+            { id: 12, name: "6mm Blue Solar Glass", category: "Float Glass", thickness: 6, color: "Blue", coating: "Sun Control", edgeFinish: "Seamed", pricePerSqm: 1350, supplier: "Gold Plus Glass", description: "Facade cooling." }
         ];
 
-        // Simplified local mock of the AI findBestMatches for demonstration
-        async function mockFindBestMatches(userQuery, products, filters) {
-            await new Promise(r => setTimeout(r, 1500)); // Simulate AI delay
-            return products
-                .filter(p => !filters.category || filters.category === 'All' || p.category === filters.category)
-                .filter(p => !filters.maxPrice || p.pricePerSqm <= filters.maxPrice)
-                .slice(0, 5)
-                .map(p => ({
-                    id: p.id,
-                    matchScore: Math.floor(Math.random() * 40) + 60, // Random score 60-100
-                    matchReason: `Its ${p.thickness}mm specification and ${p.category} profile perfectly align with your structural and safety requirements.`
-                }));
+        async function findBestMatches(userQuery, products) {
+            const API_URL = "https://api.anthropic.com/v1/messages";
+            // Mocking env read for this CDN version, but logic matches user request
+            const API_KEY = window.VITE_ANTHROPIC_API_KEY || ""; 
+
+            if (!API_KEY) {
+                console.warn("API Key missing. Returning mock data for UI demo.");
+                return products.slice(0, 3).map(p => ({ id: p.id, matchScore: 95, matchReason: "High relevance to your structural safety needs." }));
+            }
+
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": API_KEY,
+                    "anthropic-version": "2023-06-01",
+                    "dangerously-allow-the-browser": "true"
+                },
+                body: JSON.stringify({
+                    model: "claude-3-5-sonnet-20240620",
+                    max_tokens: 1500,
+                    system: `You are an AmalGus consultant. Score these products 0-100 based on the query. Return ONLY a JSON array: [{id, matchScore, matchReason}]. Product Catalog: ${JSON.stringify(products)}`,
+                    messages: [{ role: "user", content: userQuery }],
+                    temperature: 0
+                })
+            });
+            const data = await response.json();
+            return JSON.parse(data.content[0].text.trim());
         }
 
         const App = () => {
             const [query, setQuery] = React.useState('');
             const [loading, setLoading] = React.useState(false);
             const [results, setResults] = React.useState([]);
-            const [filters, setFilters] = React.useState({
-                category: 'All',
-                maxPrice: '',
-                thickness: 'Any'
-            });
+            const [filters, setFilters] = React.useState({ category: 'All', maxPrice: '', thickness: 'Any' });
 
-            const handleSearch = async () => {
+            const suggestions = [
+                "6mm tempered glass for office cabin partition, clear, polished edges",
+                "Laminated safety glass for balcony railing, UV protected, 8-10mm",
+                "Energy efficient insulated glass unit, 5+12+5, 2 meter height"
+            ];
+
+            const executeSearch = async () => {
                 if (!query.trim()) return;
                 setLoading(true);
+
                 try {
-                    const matches = await mockFindBestMatches(query, PRODUCTS, filters);
-                    setResults(matches);
-                } catch (error) {
-                    console.error(error);
+                    // 1. Filter local products first
+                    const filtered = PRODUCTS.filter(p => {
+                        const catMatch = filters.category === 'All' || p.category === filters.category;
+                        const priceMatch = !filters.maxPrice || p.pricePerSqm <= parseInt(filters.maxPrice);
+                        let thickMatch = true;
+                        if (filters.thickness !== 'Any') {
+                            const val = parseInt(filters.thickness);
+                            if (filters.thickness === '12mm+') thickMatch = p.thickness >= 12;
+                            else thickMatch = Math.floor(p.thickness) === val;
+                        }
+                        return catMatch && priceMatch && thickMatch;
+                    });
+
+                    // 2. Call AI with filtered subset
+                    const matches = await findBestMatches(query, filtered);
+
+                    // 3. Join with full product data
+                    const joined = matches.map(m => ({
+                        ...m,
+                        product: PRODUCTS.find(p => p.id === m.id)
+                    })).filter(j => j.product);
+
+                    setResults(joined);
+                } catch (e) {
+                    console.error("Search failed", e);
                 } finally {
                     setLoading(false);
+                    setTimeout(() => lucide.createIcons(), 100);
                 }
             };
 
-            const getScoreColor = (score) => {
-                if (score >= 80) return 'bg-emerald-500';
-                if (score >= 60) return 'bg-amber-500';
-                return 'bg-orange-500';
-            };
-
             return (
-                <div class="min-h-screen">
-                    {/* Header */}
-                    <header class="bg-white border-b border-slate-200 py-6 px-4 mb-8">
-                        <div class="max-w-6xl mx-auto flex flex-col items-center">
-                            <h1 class="text-3xl font-bold text-primary flex items-center gap-2">
-                                <i data-lucide="layers"></i> AmalGus
-                            </h1>
-                            <p class="text-slate-500 font-medium">Find the Right Glass, Instantly</p>
+                <div className="min-h-screen pb-20">
+                    <header className="bg-white border-b border-slate-200 py-6 px-4 mb-8 sticky top-0 z-50">
+                        <div className="max-w-6xl mx-auto flex flex-col items-center">
+                            <h1 className="text-3xl font-bold text-primary flex items-center gap-2">AmalGus</h1>
+                            <p className="text-slate-500 font-medium">Find the Right Glass, Instantly</p>
                         </div>
                     </header>
 
-                    <main class="max-w-6xl mx-auto px-4 pb-20">
-                        {/* Search Section */}
-                        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-12">
-                            <div class="mb-6">
-                                <label class="block text-sm font-semibold text-slate-700 mb-2">Describe what you need...</label>
+                    <main className="max-w-6xl mx-auto px-4">
+                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-12">
+                            <div className="mb-4">
+                                <label className="block text-sm font-semibold text-slate-700 mb-2">Describe what you need...</label>
                                 <textarea 
-                                    className="w-full h-32 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400"
-                                    placeholder="e.g. 'I need safety glass for a high-rise balcony railing that provides UV protection and reduces energy costs...'"
+                                    className="w-full h-32 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all placeholder:text-slate-300"
+                                    placeholder="Requirement description..."
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
-                                ></textarea>
+                                />
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {suggestions.map((s, i) => (
+                                        <button 
+                                            key={i} 
+                                            onClick={() => setQuery(s)}
+                                            className="text-xs bg-slate-50 border border-slate-200 text-slate-500 px-3 py-1.5 rounded-full hover:border-primary hover:text-primary transition-all"
+                                        >
+                                            + {s.substring(0, 40)}...
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-8">
                                 <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Category</label>
-                                    <select 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg"
-                                        value={filters.category}
-                                        onChange={(e) => setFilters({...filters, category: e.target.value})}
-                                    >
+                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
+                                    <select className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" value={filters.category} onChange={e => setFilters({...filters, category: e.target.value})}>
                                         <option>All</option>
-                                        <option>Tempered Glass</option>
-                                        <option>Laminated Glass</option>
-                                        <option>Float Glass</option>
-                                        <option>Insulated Glass Unit</option>
-                                        <option>Mirror</option>
-                                        <option>Aluminium Hardware</option>
+                                        <option>Tempered Glass</option><option>Laminated Glass</option><option>Float Glass</option>
+                                        <option>Insulated Glass Unit</option><option>Mirror</option><option>Aluminium Hardware</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Max Price (INR/sqm)</label>
-                                    <input 
-                                        type="number" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg"
-                                        placeholder="e.g. 2000"
-                                        value={filters.maxPrice}
-                                        onChange={(e) => setFilters({...filters, maxPrice: e.target.value})}
-                                    />
+                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Max Price (INR/sqm)</label>
+                                    <input type="number" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" placeholder="Price" value={filters.maxPrice} onChange={e => setFilters({...filters, maxPrice: e.target.value})} />
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-slate-700 mb-2">Thickness</label>
-                                    <select 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg"
-                                        value={filters.thickness}
-                                        onChange={(e) => setFilters({...filters, thickness: e.target.value})}
-                                    >
-                                        <option>Any</option>
-                                        <option>4mm</option>
-                                        <option>6mm</option>
-                                        <option>8mm</option>
-                                        <option>10mm</option>
-                                        <option>12mm+</option>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Thickness</label>
+                                    <select className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" value={filters.thickness} onChange={e => setFilters({...filters, thickness: e.target.value})}>
+                                        <option>Any</option><option>4mm</option><option>6mm</option><option>8mm</option><option>10mm</option><option>12mm+</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <button 
-                                onClick={handleSearch}
-                                disabled={loading}
-                                class="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 disabled:opacity-70"
-                            >
-                                {loading ? (
-                                    <>Searching...</>
-                                ) : (
-                                    <>
-                                        <i data-lucide="sparkles"></i> Find Best Matches
-                                    </>
-                                )}
+                            <button onClick={executeSearch} disabled={loading} className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                                {loading ? "Finding Best Matches..." : <><i data-lucide="sparkles"></i> Find Best Matches</>}
                             </button>
-                        </section>
+                        </div>
 
-                        {/* Results Section */}
                         {loading ? (
-                            <section>
-                                <h2 class="text-xl font-bold mb-6 text-slate-700">Analysing catalog...</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {[1,2,3].map(i => (
-                                        <div key={i} class="bg-white rounded-xl border border-slate-200 p-6 animate-pulse">
-                                            <div class="h-6 bg-slate-200 rounded w-3/4 mb-4"></div>
-                                            <div class="h-4 bg-slate-100 rounded w-full mb-2"></div>
-                                            <div class="h-4 bg-slate-100 rounded w-2/3 mb-6"></div>
-                                            <div class="h-10 bg-slate-50 rounded w-full"></div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse">
+                                {[1,2,3,4].map(i => <div key={i} className="bg-white h-64 rounded-2xl border border-slate-100"></div>)}
+                            </div>
+                        ) : results.length > 0 && (
+                            <div>
+                                <h2 className="text-2xl font-bold text-slate-800 mb-8">Top Matches for your requirement</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {results.map(res => (
+                                        <div key={res.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
+                                            <div className="p-6 flex-1">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-teal-50 px-2 py-1 rounded">{res.product.category}</span>
+                                                    <span className="text-lg font-bold">₹{res.product.pricePerSqm}</span>
+                                                </div>
+                                                <h3 className="font-bold text-slate-900 mb-4">{res.product.name}</h3>
+                                                
+                                                <div className="mb-6">
+                                                    <div className="flex justify-between text-xs font-bold mb-1">
+                                                        <span className="text-slate-500">Match Accuracy</span>
+                                                        <span className={res.matchScore >= 80 ? "text-emerald-600" : "text-amber-600"}>{res.matchScore}%</span>
+                                                    </div>
+                                                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                                        <div className={`h-full ${res.matchScore >= 80 ? 'bg-emerald-500' : 'bg-amber-500'}`} style={{width: `${res.matchScore}%`}}></div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-wrap gap-1.5 mb-6">
+                                                    {[res.product.thickness + 'mm', res.product.color, res.product.coating, res.product.edgeFinish].map(t => (
+                                                        <span key={t} className="text-[10px] bg-slate-50 border border-slate-100 text-slate-500 px-2 py-1 rounded font-medium">{t}</span>
+                                                    ))}
+                                                </div>
+
+                                                <div className="bg-slate-50 p-4 rounded-xl text-sm border border-slate-100 text-slate-600 italic mb-4 font-normal leading-relaxed">
+                                                    "{res.matchReason}"
+                                                </div>
+                                            </div>
+                                            <div className="p-6 pt-0 mt-auto">
+                                                <div className="text-xs text-slate-400 mb-4 flex items-center gap-1"><i data-lucide="factory" className="w-3"></i> {res.product.supplier}</div>
+                                                <button className="w-full py-3 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl transition-all">Request Quote</button>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
-                            </section>
-                        ) : results.length > 0 ? (
-                            <section>
-                                <div class="flex items-center justify-between mb-8">
-                                    <h2 class="text-2xl font-bold text-slate-800">Top Matches for your requirement</h2>
-                                    <span class="text-sm text-slate-500">{results.length} recommendations</span>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {results.map(match => {
-                                        const product = PRODUCTS.find(p => p.id === match.id);
-                                        return (
-                                            <div key={match.id} class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
-                                                <div class="p-6">
-                                                    <div class="flex justify-between items-start mb-4">
-                                                        <span class="text-xs font-bold uppercase tracking-wider text-primary bg-teal-50 px-2 py-1 rounded">
-                                                            {product.category}
-                                                        </span>
-                                                        <span class="text-lg font-bold text-slate-900">₹{product.pricePerSqm} <span class="text-xs text-slate-400 font-normal">/sqm</span></span>
-                                                    </div>
-                                                    <h3 class="text-lg font-bold text-slate-900 mb-4 group-hover:text-primary transition-colors">{product.name}</h3>
-                                                    
-                                                    {/* Match Score */}
-                                                    <div class="mb-6">
-                                                        <div class="flex justify-between items-center mb-1.5">
-                                                            <span class="text-sm font-semibold text-slate-600">Match Confidence</span>
-                                                            <span class={`text-sm font-bold ${match.matchScore >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>{match.matchScore}%</span>
-                                                        </div>
-                                                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                                            <div 
-                                                                className={`h-full progress-bar ${getScoreColor(match.matchScore)}`}
-                                                                style={{ width: `${match.matchScore}%` }}
-                                                            ></div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Specs */}
-                                                    <div class="flex flex-wrap gap-2 mb-6">
-                                                        <div class="text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200 px-2 py-1 rounded-md">{product.thickness}mm</div>
-                                                        <div class="text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200 px-2 py-1 rounded-md">{product.color}</div>
-                                                        <div class="text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200 px-2 py-1 rounded-md">{product.coating}</div>
-                                                        <div class="text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200 px-2 py-1 rounded-md">{product.edgeFinish}</div>
-                                                    </div>
-
-                                                    {/* Match Reason */}
-                                                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-600 mb-6 italic">
-                                                        "{match.matchReason}"
-                                                    </div>
-
-                                                    <div class="flex items-center gap-2 mb-6 p-2 bg-slate-50/50 rounded-lg">
-                                                        <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[10px] font-bold text-primary">
-                                                            {product.supplier.split(' ').map(n => n[0]).join('')}
-                                                        </div>
-                                                        <span class="text-xs font-medium text-slate-500">{product.supplier}</span>
-                                                    </div>
-
-                                                    <button class="w-full py-3 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-bold rounded-xl transition-all">
-                                                        Request Quote
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </section>
-                        ) : query && !loading ? (
-                            <div class="text-center py-20 bg-white rounded-2xl border border-dashed border-slate-300">
-                                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <i data-lucide="search-x" class="text-slate-400"></i>
-                                </div>
-                                <h3 class="text-lg font-bold text-slate-800">No matching products found</h3>
-                                <p class="text-slate-500">Try adjusting your filters or refining your description.</p>
                             </div>
-                        ) : null}
+                        )}
                     </main>
-
-                    <footer class="text-center py-10 border-t border-slate-200 text-slate-400 text-sm font-medium bg-white">
-                        &copy; 2026 AmalGus Glass Marketplace. All rights reserved.
-                    </footer>
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-
-        // Refresh icons after render
         setTimeout(() => lucide.createIcons(), 500);
     </script>
 </body>
