@@ -32,6 +32,7 @@
 <body class="bg-[#f9fafb] text-slate-900 overflow-x-hidden antialiased">
     <div id="root"></div>
 
+    <script src="env-config.js"></script>
     <script type="text/babel">
         // --- DATA HUB ---
         const PRODUCTS = [
@@ -78,16 +79,17 @@
         };
 
         // --- BROWSER-SAFE ENV LOADER ---
-        let VITE_GROQ_API_KEY = "";
+        let VITE_GROQ_API_KEY = window.VITE_GROQ_API_KEY || "";
         
         async function loadEnv() {
+            if (VITE_GROQ_API_KEY) return;
             try {
                 const resp = await fetch('.env');
                 const text = await resp.text();
                 const match = text.match(/VITE_GROQ_API_KEY=(.*)/);
                 if (match) VITE_GROQ_API_KEY = match[1].trim();
             } catch (e) {
-                console.warn("Local .env could not be loaded. Ensure 'npx serve .' is running.");
+                console.warn("Local .env could not be loaded. This is expected in production.");
             }
         }
         loadEnv();
