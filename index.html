@@ -337,35 +337,39 @@
                         return catMatch && priceMatch;
                     });
 
-                    let matches = filtered.map(p => ({
-                        product: p,
-                        score: calculateScore(p, parsed),
-                        reason: getExplanation(p, parsed)
-                    }))
-                    .filter(item => item.score > 0)
+                    let matches = filtered.map(p => {
+                        const score = Number(calculateScore(p, parsed));
+                        return {
+                            product: p,
+                            score: isNaN(score) ? 0 : score,
+                            reason: getExplanation(p, parsed)
+                        };
+                    })
+                    .filter(item => typeof item.score === 'number' && item.score >= 30) // Minimum threshold for relevance
                     .sort((a, b) => b.score - a.score)
                     .slice(0, 5);
 
                     if (matches.length === 0 && PRODUCTS.length > 0) {
                         setFallback(true);
                         
-                        let fallbackMatches = PRODUCTS.map(p => ({
-                            product: p,
-                            score: calculateScore(p, parsed),
-                            reason: getExplanation(p, parsed)
-                        }))
-                        .filter(item => item.score > 0)
+                        let fallbackMatches = PRODUCTS.map(p => {
+                            const score = Number(calculateScore(p, parsed));
+                            return {
+                                product: p,
+                                score: isNaN(score) ? 0 : score,
+                                reason: getExplanation(p, parsed)
+                            };
+                        })
+                        .filter(item => typeof item.score === 'number' && item.score >= 10) // Lower but safe threshold for fallback
                         .sort((a, b) => b.score - a.score)
                         .slice(0, 5);
 
                         if (fallbackMatches.length === 0) {
-                            fallbackMatches = PRODUCTS.map(p => ({
+                            fallbackMatches = PRODUCTS.slice(0, 3).map(p => ({
                                 product: p,
-                                score: calculateScore(p, parsed),
-                                reason: getExplanation(p, parsed)
-                            }))
-                            .sort((a, b) => b.score - a.score)
-                            .slice(0, 5);
+                                score: 0,
+                                reason: "General industry recommendation."
+                            }));
                         }
                         matches = fallbackMatches;
                     }
