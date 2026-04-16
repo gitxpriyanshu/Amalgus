@@ -105,6 +105,12 @@
                         return catMatch && priceMatch && thickMatch;
                     });
 
+                    if (filtered.length === 0) {
+                        setResults([]);
+                        setLoading(false);
+                        return;
+                    }
+
                     // 2. Call AI with filtered subset
                     const matches = await findBestMatches(query, filtered);
 
@@ -201,6 +207,23 @@
                         {loading ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse">
                                 {[1,2,3,4].map(i => <div key={i} className="bg-white h-64 rounded-2xl border border-slate-100"></div>)}
+                            </div>
+                        ) : query && !loading && results.length === 0 ? (
+                            <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 shadow-sm">
+                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="filter-x" className="text-slate-300 w-10 h-10"></i>
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-800 mb-2">No matching products found</h3>
+                                <p className="text-slate-500 max-w-sm mx-auto">
+                                    Your search query might be conflicting with the active filters. 
+                                    Try setting **Category to "All"** or increasing the **Max Price**.
+                                </p>
+                                <button 
+                                    onClick={() => setFilters({category: 'All', maxPrice: '', thickness: 'Any'})}
+                                    className="mt-6 text-primary font-bold hover:underline"
+                                >
+                                    Reset all filters
+                                </button>
                             </div>
                         ) : results.length > 0 && (
                             <div>
