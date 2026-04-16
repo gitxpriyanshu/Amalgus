@@ -1,54 +1,32 @@
-# AmalGus Smart Product Discovery
+# AmalGus
 
-**Find the Right Glass, Instantly.**
-An AI-powered B2B marketplace prototype that enables intelligent product discovery and supplier matching for glass and allied materials.
+Find the right glass product using natural language.
 
----
-
-## 🛠️ Tech Stack
-
-* **Frontend**: React 18
-* **Styling**: Tailwind CSS
-* **AI Integration**: Groq API (Llama 3)
-* **Icons**: Lucide React
+This project is built as part of the AmalGus assignment. It focuses on converting user requirements into structured data and matching them with the most relevant products.
 
 ---
 
-## 🚀 How to Run Locally
+## Objective
 
-1. Install dependencies
+The goal of this project is to:
 
-```bash
-npm install
-```
-
-2. Create `.env` file
-
-```env
-VITE_GROQ_API_KEY=your_groq_key_here
-```
-
-3. Start development server
-
-```bash
-npm run dev
-```
+* Accept a natural language query from the user
+* Extract technical parameters from it
+* Match products using a weighted logic
+* Rank results based on relevance
+* Explain why each product is recommended
 
 ---
 
-## 🧠 How Intelligent Matching Works
+## How it Works
 
-This system implements a **hybrid AI + rule-based matching engine** designed specifically for glass industry use cases.
+### 1. Query Understanding
 
----
+The user enters a requirement like:
 
-### 1️⃣ Query Understanding (AI Parser)
+"6mm tempered glass for office partitions"
 
-User input (natural language):
-
-> “6mm tempered glass for office partitions”
-
-Is converted into structured data:
+This is converted into structured data:
 
 ```json
 {
@@ -59,98 +37,126 @@ Is converted into structured data:
 }
 ```
 
-The parser also:
-
-* Adds **synonyms (tempered = toughened)**
-* Applies **tolerance (±0.5mm)**
-* Assigns **importance weights**
+This step is handled using the Groq API (Llama 3).
 
 ---
 
-### 2️⃣ Weighted Matching Engine (Core Logic)
+### 2. Matching Logic
 
-Each product is scored using a **weighted scoring system**:
+Each product is evaluated using a weighted scoring system:
 
-* Category match → highest priority
-* Thickness match → high
-* Use-case match → medium
-* Dimensions → flexible
-* Color → lower priority
+* Category
+* Thickness
+* Use-case
+* Color
 
-Final score:
+Each parameter contributes to a final score between 0 and 100.
 
+---
+
+### 3. Ranking
+
+All products are scored and sorted based on relevance.
+The top results are displayed to the user.
+
+---
+
+### 4. Explanation
+
+Each product includes:
+
+* Match score
+* A short explanation
+* Which attributes matched
+
+This helps the user understand why a product is recommended.
+
+---
+
+## Additional Improvements
+
+To make the system more practical, a few improvements were added beyond the basic requirements:
+
+### Fallback Handling
+
+If no product matches the filters:
+
+* The system shows closest matches instead of empty results
+* A message is displayed to inform the user
+
+---
+
+### Confidence Indicator
+
+A simple confidence level is shown based on match quality:
+
+* High
+* Moderate
+* Low
+
+---
+
+### Limitations
+
+If a product does not fully match:
+
+* The system highlights differences
+* Example: price higher than requested, slight thickness variation
+
+This avoids misleading recommendations.
+
+---
+
+## Tech Stack
+
+* React 18
+* Tailwind CSS
+* Groq API (Llama 3)
+* Lucide React
+
+---
+
+## How to Run
+
+Install dependencies:
+
+```bash
+npm install
 ```
-Score = Weighted Sum of Matches (0–100%)
+
+Create a `.env` file:
+
+```env
+VITE_GROQ_API_KEY=your_groq_key_here
+```
+
+Start the app:
+
+```bash
+npm run dev
 ```
 
 ---
 
-### 3️⃣ Intelligent Ranking
+## Assumptions
 
-* All products are evaluated
-* Sorted by match score
-* Top 5 results returned
-
----
-
-### 4️⃣ Explainable Results
-
-Each result includes:
-
-* ✅ Match Score (e.g., 87%)
-* ✅ Explanation (why it matched)
-
-Example:
-
-> “Matches required thickness and is suitable for office partitions.”
+* Uses a small mock dataset (15 products)
+* Matching is done on the client side
+* No database or vector search is used
 
 ---
 
-## 🤖 AI Usage
+## Future Improvements
 
-* **Groq (Llama 3)**:
-
-  * Used for parsing natural language queries
-  * Enhances semantic understanding
-
-* **Antigravity AI / v0**:
-
-  * Used for rapid UI development and layout
+* Backend integration
+* Larger product catalog
+* Advanced filtering
+* Supplier and RFQ integration
 
 ---
 
-## ⚖️ Key Design Decisions
+## Summary
 
-### Why Hybrid Approach (AI + Logic)?
+This project demonstrates how natural language input can be used to build a simple and explainable product discovery system.
 
-* AI handles **understanding intent**
-* Rule-based system ensures **consistent scoring**
-* Better control compared to pure LLM ranking
-
----
-
-## ⚖️ Assumptions & Trade-offs
-
-* Uses **mock dataset (15 products)**
-* Matching runs **client-side for speed**
-* No database or embeddings (kept lightweight for prototype)
-
----
-
-## 📈 Future Improvements
-
-* Backend API for secure AI calls
-* Vector search (FAISS / Pinecone) for large catalogs
-* Advanced filtering (price range, certifications)
-* Real supplier integration (RFQ system)
-
----
-
-## 🎯 Key Highlights
-
-* Natural language → structured query
-* Weighted intelligent matching
-* Explainable AI recommendations
-* Real-world glass industry relevance
-
----
+It focuses on clarity, ranking logic, and making the results easy to understand for the user.
