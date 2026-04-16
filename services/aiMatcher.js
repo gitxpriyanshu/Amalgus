@@ -30,7 +30,7 @@ export async function findBestMatches(userQuery, products) {
         "Authorization": `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: "llama3-70b-8192",
+        model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userQuery }

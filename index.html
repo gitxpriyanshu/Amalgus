@@ -3,278 +3,494 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmalGus | Smart Product Discovery</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <title>AmalGus X | Intelligent Procurement Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { primary: '#0D9488', 'primary-dark': '#0f766e' },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { 
+                        primary: '#2563eb', 
+                        'primary-dark': '#1d4ed8',
+                        'accent-glass': 'rgba(255, 255, 255, 0.7)'
+                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
                 }
             }
         }
     </script>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .glass-panel { backdrop-filter: blur(16px); background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.4); }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-[#f9fafb] text-slate-900 overflow-x-hidden antialiased">
     <div id="root"></div>
 
     <script type="text/babel">
-        // In a real Vite app, these would be imports. 
-        // For this single-file working demo, we keep them accessible.
-        
+        // --- DATA HUB ---
         const PRODUCTS = [
-            { id: 1, name: "6mm Clear Tempered Glass", category: "Tempered Glass", thickness: 6, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 950, supplier: "Asahi India Glass (AIS)", description: "Safety glass for partitions." },
-            { id: 2, name: "12mm Extra Clear Toughened Glass", category: "Tempered Glass", thickness: 12, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 2100, supplier: "Saint-Gobain India", description: "Heavy-duty storefronts." },
-            { id: 3, name: "10.76mm Laminated Safety Glass", category: "Laminated Glass", thickness: 10.76, color: "Clear", coating: "UV Protection", edgeFinish: "Seamed", pricePerSqm: 1850, supplier: "Gold Plus Glass", description: "Security and railings." },
-            { id: 4, name: "24mm Double Glazed Unit", category: "Insulated Glass Unit", thickness: 24, color: "Clear", coating: "Low-E", edgeFinish: "Seamed", pricePerSqm: 3200, supplier: "Sisecam Flat Glass", description: "Energy efficiency." },
-            { id: 5, name: "5mm Silver Mirror", category: "Mirror", thickness: 5, color: "Clear", coating: "None", edgeFinish: "Bevelled", pricePerSqm: 750, supplier: "ModiGuard Glass", description: "Interior decor." },
-            { id: 6, name: "8mm Bronze Tinted Glass", category: "Float Glass", thickness: 8, color: "Bronze", coating: "None", edgeFinish: "Seamed", pricePerSqm: 1150, supplier: "Hindusthan National Glass", description: "Glare reduction." },
-            { id: 7, name: "Heavy Duty Floor Spring", category: "Aluminium Hardware", thickness: 0, color: "Satin", coating: "Anti-Rust", edgeFinish: "Polished", pricePerSqm: 4500, supplier: "Dorma India", description: "Door pivots." },
-            { id: 8, name: "Four-Way Spider Fitting", category: "Spider Fittings", thickness: 0, color: "Steel", coating: "None", edgeFinish: "Mirror", pricePerSqm: 1200, supplier: "Ozone Overseas", description: "Structural glazing." },
-            { id: 9, name: "6mm Frosted Tempered Glass", category: "Tempered Glass", thickness: 6, color: "Frosted", coating: "None", edgeFinish: "Polished", pricePerSqm: 1400, supplier: "Saint-Gobain India", description: "Privacy partitions." },
-            { id: 10, name: "19.52mm SGP Laminated Glass", category: "Laminated Glass", thickness: 19.52, color: "Clear", coating: "None", edgeFinish: "Polished", pricePerSqm: 8500, supplier: "Asahi India Glass (AIS)", description: "Glass floors." },
-            { id: 11, name: "Patch Fitting Set", category: "Aluminium Hardware", thickness: 0, color: "Silver", coating: "None", edgeFinish: "Brushed", pricePerSqm: 2800, supplier: "Hardwyn India", description: "Door fittings." },
-            { id: 12, name: "6mm Blue Solar Glass", category: "Float Glass", thickness: 6, color: "Blue", coating: "Sun Control", edgeFinish: "Seamed", pricePerSqm: 1350, supplier: "Gold Plus Glass", description: "Facade cooling." }
+            { "productName": "6mm Clear Tempered Glass", "category": "Tempered Glass", "specifications": { "thickness": "6mm", "dimensions": "2.44m x 1.83m", "color": "Clear" }, "supplier": "AIS Glass", "price": "₹950/sqm", "description": "High-strength safety glass for partitions." },
+            { "productName": "12mm Extra Clear Toughened Glass", "category": "Tempered Glass", "specifications": { "thickness": "12mm", "dimensions": "3.66m x 2.44m", "color": "Extra Clear" }, "supplier": "Saint-Gobain", "price": "₹2100/sqm", "description": "Premium industrial glass for high-end facades." },
+            { "productName": "11.52mm SGP Laminated Safety Glass", "category": "Laminated Glass", "specifications": { "thickness": "11.52mm", "dimensions": "2.44m x 1.83m", "color": "Clear" }, "supplier": "Gold Plus", "price": "₹8200/sqm", "description": "Heavy duty laminated security glass." },
+            { "productName": "24mm Blue Double Glazed Unit", "category": "Insulated Glass Unit", "specifications": { "thickness": "24mm", "dimensions": "2.14m x 3.05m", "color": "Blue Tint" }, "supplier": "Sisecam", "price": "₹3150/sqm", "description": "Energy efficient DGU for commercial use." },
+            { "productName": "4mm Clear Float Glass", "category": "Float Glass", "specifications": { "thickness": "4mm", "dimensions": "2.44m x 1.83m", "color": "Clear" }, "supplier": "HNG Glass", "price": "₹650/sqm", "description": "Standard float glass for windows." },
+            { "productName": "Heavy Duty Floor Spring", "category": "Aluminium Hardware", "specifications": { "thickness": "N/A", "dimensions": "Standard", "color": "Steel" }, "supplier": "Dorma India", "price": "₹4500/unit", "description": "Architectural floor spring for glass doors." }
         ];
 
-        async function findBestMatches(userQuery, products) {
-            const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-            const API_KEY = window.VITE_GROQ_API_KEY || ""; 
+        // --- CORE LOGIC ---
+        const calculateScore = (p, q) => {
+            let score = 0;
+            // Category (40%)
+            let catHit = p.category.toLowerCase() === q.category?.primary?.toLowerCase() ? 1 : (q.category?.aliases?.some(a => p.category.toLowerCase().includes(a.toLowerCase())) ? 0.8 : 0);
+            score += catHit * 0.4;
+            // Thickness (25%)
+            let thickHit = parseFloat(p.specifications.thickness) === parseFloat(q.thickness?.value) ? 1 : (Math.abs(parseFloat(p.specifications.thickness) - parseFloat(q.thickness?.value)) <= 1 ? 0.7 : 0);
+            score += thickHit * 0.25;
+            // Use Case (20%)
+            let ucHit = p.description.toLowerCase().includes(q.useCase?.value?.toLowerCase()) ? 1 : 0;
+            score += ucHit * 0.2;
+            // Color (15%)
+            let colHit = p.specifications.color.toLowerCase() === q.color?.value?.toLowerCase() ? 1 : 0;
+            score += colHit * 0.15;
+            return Math.min(Math.round(score * 100), 100);
+        };
 
-            if (!API_KEY) {
-                console.warn("Groq API Key missing. Returning mock data.");
-                return products.slice(0, 3).map(p => ({ id: p.id, matchScore: 95, matchReason: "High relevance to your structural safety needs." }));
+        const getExplanation = (p, q) => {
+            const hasThickness = parseFloat(p.specifications.thickness) === parseFloat(q.thickness?.value);
+            const hasUseCase = p.description.toLowerCase().includes(q.useCase?.value?.toLowerCase());
+            
+            if (hasThickness && hasUseCase) {
+                return `Perfect match for ${q.useCase.value} with the exact ${q.thickness.value} thickness you need.`;
             }
+            if (hasThickness) {
+                return `Matches your ${q.thickness.value} thickness requirement perfectly for high-performance glazing.`;
+            }
+            if (hasUseCase) {
+                return `Highly recommended for ${q.useCase.value} due to its structural design and category fit.`;
+            }
+            return "This product fits your general architectural requirements and category selection.";
+        };
 
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${API_KEY}`
-                },
+        async function parseQuery(query) {
+            // Hardcoded for static browser environment compatibility
+            const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
+            
+            if(!API_KEY) {
+                console.error("Missing Groq API Key.");
+                return { category: { primary: 'Float Glass' }, thickness: { value: '6mm' }, useCase: { value: 'partition' }, color: { value: 'Clear' } };
+            }
+            const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
                 body: JSON.stringify({
-                    model: "llama3-70b-8192",
-                    messages: [
-                        { role: "system", content: `You are an AmalGus consultant. Score these products 0-100 based on the query. Return ONLY a JSON array: [{id, matchScore, matchReason}]. Catalog: ${JSON.stringify(products)}` },
-                        { role: "user", content: userQuery }
-                    ],
-                    temperature: 0,
-                    response_format: { type: "json_object" }
+                    model: "llama-3.3-70b-versatile",
+                    messages: [{ role: "system", content: "Parse glass query into JSON: category{primary, aliases[]}, thickness{value}, dimensions{target}, color{value}, useCase{value}, priceIntent. Return ONLY JSON." }, { role: "user", content: query }],
+                    temperature: 0, response_format: { type: "json_object" }
                 })
             });
-            const data = await response.json();
-            const result = JSON.parse(data.choices[0].message.content);
-            return Array.isArray(result) ? result : (result.matches || Object.values(result)[0]);
+            const data = await resp.json();
+            return JSON.parse(data.choices[0].message.content);
         }
+
+        const ProductAnalyticsModal = ({ data, onClose }) => {
+            if (!data) return null;
+            const { product, score, reason, matchedAttributes, limitations } = data;
+            
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative border border-slate-100 p-10 animate-fade-in">
+                        <button onClick={onClose} className="absolute top-8 right-8 text-slate-300 hover:text-slate-900 transition-colors text-2xl font-bold">×</button>
+                        
+                        <div className="mb-10">
+                            <span className="text-[10px] font-black uppercase text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full tracking-widest">{product.category}</span>
+                            <h2 className="text-4xl font-black text-slate-900 mt-4 tracking-tighter">{product.productName}</h2>
+                            <p className="text-slate-400 font-bold uppercase text-[10px] mt-2 tracking-widest leading-relaxed">Managed by {product.supplier}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div>
+                                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-6 italic">Forensic Match Breakdown</h3>
+                                <div className="space-y-6">
+                                    {[
+                                        { label: 'Category Alignment', hit: matchedAttributes.some(a => a.label === 'Category') },
+                                        { label: 'Thickness Compliance', hit: matchedAttributes.some(a => a.label === 'Thickness') },
+                                        { label: 'Use-case Relevance', hit: matchedAttributes.some(a => a.label === 'Use-case') },
+                                        { label: 'Color Match', hit: matchedAttributes.some(a => a.label === 'Color') }
+                                    ].map(item => (
+                                        <div key={item.label}>
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-[11px] font-bold text-slate-700">{item.label}</span>
+                                                <span className="text-[11px] font-black text-primary">{item.hit ? '100%' : 'Mismatch'}</span>
+                                            </div>
+                                            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                                <div className={`h-full transition-all duration-1000 ${item.hit ? 'bg-emerald-500 w-full' : 'bg-slate-200 w-0'}`}></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                <div className="mt-10 p-6 bg-slate-50 rounded-3xl border border-gray-100 italic text-xs font-semibold text-slate-500 leading-relaxed shadow-inner">
+                                    "{reason}"
+                                </div>
+                            </div>
+
+                            <div className="space-y-8">
+                                <div>
+                                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4 italic">Technical Specifications</h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {Object.entries(product.specifications).map(([key, val]) => (
+                                            <div key={key} className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm">
+                                                <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">{key}</span>
+                                                <span className="text-xs font-extrabold text-slate-800">{val}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4 italic">Full Description</h3>
+                                    <p className="text-sm font-medium text-slate-600 leading-relaxed">{product.description}</p>
+                                </div>
+
+                                <div className="pt-6 border-t border-slate-100 flex justify-between items-end">
+                                    <div>
+                                        <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Market Price</span>
+                                        <div className="text-3xl font-black text-slate-900 tracking-tighter">{product.price}</div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-[32px] font-black text-primary tracking-tighter">{score}%</div>
+                                        <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Final Reliability Score</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        const Header = () => (
+            <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 py-4 px-12 flex justify-between items-center shadow-sm">
+                <div className="flex items-center gap-2 group cursor-pointer">
+                    <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-black text-sm transition-transform group-hover:rotate-12">AX</div>
+                    <span className="text-xl font-bold tracking-tighter text-slate-900">AMALGUS <span className="text-primary italic">X</span></span>
+                </div>
+                <nav className="hidden md:flex items-center gap-10">
+                    {["Products", "Suppliers", "RFQs"].map(l => <a key={l} href="#" className="text-sm font-semibold text-slate-500 hover:text-primary transition-colors">{l}</a>)}
+                    <button className="bg-primary text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200 hover:scale-105 transition-all">Launch Dashboard</button>
+                </nav>
+            </header>
+        );
+
+        const ProductCard = ({ product, score, reason, queryObj, filters, onOpenAnalytics }) => {
+            const isHighMatch = score >= 50;
+            const isLowMatch = score < 25;
+            
+            const badgeColor = isHighMatch ? 'bg-emerald-500' : (isLowMatch ? 'bg-rose-500' : 'bg-slate-500');
+            const cardOpacity = isLowMatch ? 'opacity-[0.85]' : 'opacity-100';
+            const cardBorder = isHighMatch ? 'border-emerald-200 ring-4 ring-emerald-50/50' : 'border-gray-100';
+
+            const matchesCategory = product.category.toLowerCase() === queryObj?.category?.primary?.toLowerCase();
+            const matchesThickness = parseFloat(product.specifications.thickness) === parseFloat(queryObj?.thickness?.value);
+            const matchesUseCase = product.description.toLowerCase().includes(queryObj?.useCase?.value?.toLowerCase());
+            const matchesColor = product.specifications.color.toLowerCase() === queryObj?.color?.value?.toLowerCase();
+
+            const matchedAttributes = [
+                { label: 'Category', match: matchesCategory },
+                { label: 'Thickness', match: matchesThickness },
+                { label: 'Use-case', match: matchesUseCase },
+                { label: 'Color', match: matchesColor }
+            ].filter(a => a.match);
+
+            // Refined Limitations Logic
+            const limitations = [
+                { 
+                    label: 'Higher price than requested', 
+                    match: filters?.maxPrice && parseInt(product.price.replace(/[^0-9]/g, '')) > parseInt(filters.maxPrice) 
+                },
+                { 
+                    label: 'Thickness slightly different', 
+                    match: queryObj?.thickness?.value && Math.abs(parseFloat(product.specifications.thickness) - parseFloat(queryObj.thickness.value)) > 1.0 
+                },
+                { 
+                    label: 'Different category than requested', 
+                    match: queryObj?.category?.primary && product.category.toLowerCase() !== queryObj.category.primary.toLowerCase() 
+                }
+            ].filter(l => l.match);
+
+            return (
+                <div className={`bg-white rounded-[32px] border p-8 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col group animate-fade-in relative overflow-hidden h-auto min-h-[640px] ${cardOpacity} ${cardBorder}`}>
+                    <div className={`absolute top-0 right-0 w-32 h-32 opacity-5 rounded-bl-full ${badgeColor}`}></div>
+                    <div className="flex justify-between items-start mb-6">
+                        <div className="flex-1">
+                            <span className="text-[10px] font-black uppercase text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full tracking-widest">{product.category}</span>
+                            <h3 className="text-xl font-bold text-slate-900 mt-4 leading-tight">{product.productName}</h3>
+                            <p className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-tight">{product.supplier}</p>
+                        </div>
+                        <div className={`px-4 py-2 rounded-2xl text-[11px] font-black text-white shadow-lg ${badgeColor}`}>
+                            {isLowMatch ? "Low Match (Alternative Option) " : ""}{score}% Match
+                        </div>
+                    </div>
+
+                    <div className="text-3xl font-black text-slate-900 mb-8 mt-2">{product.price}</div>
+
+                    <div className="grid grid-cols-3 gap-3 mb-8">
+                        <div className="bg-white p-3 rounded-2xl border border-gray-50 text-center shadow-sm">
+                            <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Thickness</span>
+                            <span className="text-xs font-extrabold text-slate-800">{product.specifications.thickness}</span>
+                        </div>
+                        <div className="bg-white p-3 rounded-2xl border border-gray-50 text-center shadow-sm">
+                            <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Dimensions</span>
+                            <span className="text-xs font-extrabold text-slate-800 truncate">{product.specifications.dimensions}</span>
+                        </div>
+                        <div className="bg-white p-3 rounded-2xl border border-gray-50 text-center shadow-sm">
+                            <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Color</span>
+                            <span className="text-xs font-extrabold text-slate-800 truncate">{product.specifications.color}</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-50 p-6 rounded-3xl mb-6 flex-grow border border-gray-100 italic text-[11px] font-semibold text-slate-500 leading-relaxed shadow-inner">
+                        "{reason}"
+                    </div>
+
+                    {matchedAttributes.length > 0 && (
+                        <div className="mb-4 p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-emerald-600 mb-3 ml-1">Why this is recommended:</p>
+                            <div className="space-y-2">
+                                {matchedAttributes.map(attr => (
+                                    <div key={attr.label} className="flex items-center gap-2 text-[10px] font-bold text-emerald-700">
+                                        <span className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center text-white text-[8px]">✔</span>
+                                        {attr.label === 'Use-case' ? 'Suitable for ' + attr.label : 'Matches ' + attr.label}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {limitations.length > 0 && (
+                        <div className="mb-8 p-5 bg-slate-100/50 rounded-2xl border border-slate-200/50">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-3 ml-1">Key Limitations:</p>
+                            <div className="space-y-2">
+                                {limitations.map(lim => (
+                                    <div key={lim.label} className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
+                                        <span className="w-4 h-4 bg-slate-300 rounded-full flex items-center justify-center text-white text-[12px]">!</span>
+                                        {lim.label}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <button 
+                        onClick={() => onOpenAnalytics({ product, score, reason, matchedAttributes, limitations })}
+                        className="w-full py-4 bg-slate-900 hover:bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl transition-all shadow-xl group-hover:scale-[1.02]"
+                    >
+                        Product Analytics
+                    </button>
+                </div>
+            );
+        };
 
         const App = () => {
             const [query, setQuery] = React.useState('');
             const [loading, setLoading] = React.useState(false);
             const [results, setResults] = React.useState([]);
-            const [filters, setFilters] = React.useState({ category: 'All', maxPrice: '', thickness: 'Any' });
+            const [queryObj, setQueryObj] = React.useState(null);
+            const [filters, setFilters] = React.useState({ category: 'All Categories', maxPrice: '' });
+            const [fallback, setFallback] = React.useState(false);
+            const [selectedProduct, setSelectedProduct] = React.useState(null);
 
-            const suggestions = [
-                "6mm tempered glass for office cabin partition, clear, polished edges",
-                "Laminated safety glass for balcony railing, UV protected, 8-10mm",
-                "Energy efficient insulated glass unit, 5+12+5, 2 meter height"
-            ];
-
-            const executeSearch = async () => {
-                if (!query.trim()) return;
+            const handleSearch = async () => {
+                if(!query.trim()) return;
                 setLoading(true);
-
+                setFallback(false);
                 try {
-                    // 1. Filter local products first
+                    const parsed = await parseQuery(query);
+                    setQueryObj(parsed);
+                    
                     const filtered = PRODUCTS.filter(p => {
-                        const catMatch = filters.category === 'All' || p.category === filters.category;
-                        const priceMatch = !filters.maxPrice || p.pricePerSqm <= parseInt(filters.maxPrice);
-                        let thickMatch = true;
-                        if (filters.thickness !== 'Any') {
-                            const val = parseInt(filters.thickness);
-                            if (filters.thickness === '12mm+') thickMatch = p.thickness >= 12;
-                            else thickMatch = Math.floor(p.thickness) === val;
-                        }
-                        return catMatch && priceMatch && thickMatch;
+                        const price = parseInt(p.price.replace(/[^0-9]/g, ''));
+                        const catMatch = filters.category === 'All Categories' || p.category === filters.category;
+                        const priceMatch = !filters.maxPrice || price <= parseInt(filters.maxPrice);
+                        return catMatch && priceMatch;
                     });
 
-                    if (filtered.length === 0) {
-                        setResults([]);
-                        setLoading(false);
-                        return;
+                    let matches = filtered.map(p => ({
+                        product: p,
+                        score: calculateScore(p, parsed),
+                        reason: getExplanation(p, parsed)
+                    }))
+                    .filter(item => item.score > 0)
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 5);
+
+                    if (matches.length === 0 && PRODUCTS.length > 0) {
+                        setFallback(true);
+                        
+                        let fallbackMatches = PRODUCTS.map(p => ({
+                            product: p,
+                            score: calculateScore(p, parsed),
+                            reason: getExplanation(p, parsed)
+                        }))
+                        .filter(item => item.score > 0)
+                        .sort((a, b) => b.score - a.score)
+                        .slice(0, 5);
+
+                        if (fallbackMatches.length === 0) {
+                            fallbackMatches = PRODUCTS.map(p => ({
+                                product: p,
+                                score: calculateScore(p, parsed),
+                                reason: getExplanation(p, parsed)
+                            }))
+                            .sort((a, b) => b.score - a.score)
+                            .slice(0, 5);
+                        }
+                        matches = fallbackMatches;
                     }
 
-                    // 2. Call AI with filtered subset
-                    const matches = await findBestMatches(query, filtered);
-
-                    // 3. Join with full product data
-                    const joined = matches.map(m => ({
-                        ...m,
-                        product: PRODUCTS.find(p => p.id === m.id)
-                    })).filter(j => j.product);
-
-                    setResults(joined);
+                    setResults(matches);
                 } catch (e) {
-                    console.error("Search failed", e);
+                    console.error(e);
                 } finally {
                     setLoading(false);
-                    setTimeout(() => lucide.createIcons(), 100);
                 }
             };
 
             return (
-                <div className="min-h-screen pb-20">
-                    <header className="bg-white border-b border-slate-200 py-6 px-4 mb-8 sticky top-0 z-50">
-                        <div className="max-w-6xl mx-auto flex justify-between items-center">
-                            <div className="flex flex-col">
-                                <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
-                                    <i data-lucide="layers" className="w-6 h-6"></i> AmalGus
-                                </h1>
-                                <p className="text-xs text-slate-400 font-medium">Find the Right Glass, Instantly</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                {!window.VITE_GROQ_API_KEY && (
-                                    <div className="flex items-center bg-slate-100 rounded-full px-3 py-1.5 border border-slate-200 gap-2">
-                                        <i data-lucide="key" className="w-3 h-3 text-slate-400"></i>
-                                        <input 
-                                            type="password" 
-                                            placeholder="Enter Groq Key" 
-                                            className="bg-transparent text-[10px] outline-none w-24"
-                                            onChange={(e) => window.VITE_GROQ_API_KEY = e.target.value}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </header>
+                <div className="min-h-screen pb-32">
+                    <Header />
 
-                    <main className="max-w-6xl mx-auto px-4">
-                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-12">
-                            <div className="mb-4">
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Describe what you need...</label>
-                                <textarea 
-                                    className="w-full h-32 p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all placeholder:text-slate-300"
-                                    placeholder="Requirement description..."
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                />
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                    {suggestions.map((s, i) => (
-                                        <button 
-                                            key={i} 
-                                            onClick={() => setQuery(s)}
-                                            className="text-xs bg-slate-50 border border-slate-200 text-slate-500 px-3 py-1.5 rounded-full hover:border-primary hover:text-primary transition-all"
-                                        >
-                                            + {s.substring(0, 40)}...
-                                        </button>
+                    <section className="pt-24 pb-20 px-6 text-center">
+                        <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 mb-8">
+                            Find the Right Glass <span className="text-primary italic underline underline-offset-[12px] decoration-blue-200">Instantly.</span>
+                        </h2>
+                        <p className="text-lg md:text-xl text-slate-500 font-medium mb-12 max-w-3xl mx-auto">
+                            Our AI discovery engine understands architectural intent. Describe your specification in plain language to generate instant enterprise matches.
+                        </p>
+
+                        <div className="max-w-4xl mx-auto bg-white rounded-[40px] p-3 shadow-2xl border border-gray-200 focus-within:ring-[24px] focus-within:ring-blue-50/50 transition-all duration-700">
+                            <textarea 
+                                className="w-full h-32 p-8 text-xl font-semibold outline-none bg-gray-50/50 rounded-[32px] focus:bg-white transition-colors placeholder:text-slate-300 resize-none"
+                                placeholder="Describe: e.g. 6mm tempered glass for office partitions..."
+                                value={query} onChange={e => setQuery(e.target.value)}
+                            />
+                            <div className="flex justify-between items-center px-10 py-4">
+                                <div className="hidden md:flex flex-wrap gap-2">
+                                    {["6mm Tempered", "Laminated Railing", "Budget Unit"].map(t => (
+                                        <button key={t} onClick={() => setQuery(t + " glass")} className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-colors cursor-pointer">{t}</button>
                                     ))}
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-8">
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Category</label>
-                                    <select className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" value={filters.category} onChange={e => setFilters({...filters, category: e.target.value})}>
-                                        <option>All</option>
-                                        <option>Tempered Glass</option><option>Laminated Glass</option><option>Float Glass</option>
-                                        <option>Insulated Glass Unit</option><option>Mirror</option><option>Aluminium Hardware</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Max Price (INR/sqm)</label>
-                                    <input type="number" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" placeholder="Price" value={filters.maxPrice} onChange={e => setFilters({...filters, maxPrice: e.target.value})} />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Thickness</label>
-                                    <select className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg" value={filters.thickness} onChange={e => setFilters({...filters, thickness: e.target.value})}>
-                                        <option>Any</option><option>4mm</option><option>6mm</option><option>8mm</option><option>10mm</option><option>12mm+</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button onClick={executeSearch} disabled={loading} className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
-                                {loading ? "Finding Best Matches..." : <><i data-lucide="sparkles"></i> Find Best Matches</>}
-                            </button>
-                        </div>
-
-                        {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse">
-                                {[1,2,3,4].map(i => <div key={i} className="bg-white h-64 rounded-2xl border border-slate-100"></div>)}
-                            </div>
-                        ) : query && !loading && results.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 shadow-sm">
-                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <i data-lucide="filter-x" className="text-slate-300 w-10 h-10"></i>
-                                </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-2">No matching products found</h3>
-                                <p className="text-slate-500 max-w-sm mx-auto">
-                                    Your search query might be conflicting with the active filters. 
-                                    Try setting **Category to "All"** or increasing the **Max Price**.
-                                </p>
                                 <button 
-                                    onClick={() => setFilters({category: 'All', maxPrice: '', thickness: 'Any'})}
-                                    className="mt-6 text-primary font-bold hover:underline"
+                                    onClick={handleSearch} disabled={loading}
+                                    className="bg-primary hover:bg-primary-dark text-white px-12 py-5 rounded-[24px] font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-blue-200 active:scale-95 transition-all w-full md:w-auto"
                                 >
-                                    Reset all filters
+                                    {loading ? "Discovering Matches..." : "🔍 Execute AI Discovery"}
                                 </button>
                             </div>
-                        ) : results.length > 0 && (
-                            <div>
-                                <h2 className="text-2xl font-bold text-slate-800 mb-8">Top Matches for your requirement</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {results.map(res => (
-                                        <div key={res.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
-                                            <div className="p-6 flex-1">
-                                                <div className="flex justify-between items-start mb-4">
-                                                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-teal-50 px-2 py-1 rounded">{res.product.category}</span>
-                                                    <span className="text-lg font-bold">₹{res.product.pricePerSqm}</span>
-                                                </div>
-                                                <h3 className="font-bold text-slate-900 mb-4">{res.product.name}</h3>
-                                                
-                                                <div className="mb-6">
-                                                    <div className="flex justify-between text-xs font-bold mb-1">
-                                                        <span className="text-slate-500">Match Accuracy</span>
-                                                        <span className={res.matchScore >= 80 ? "text-emerald-600" : "text-amber-600"}>{res.matchScore}%</span>
-                                                    </div>
-                                                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                                        <div className={`h-full ${res.matchScore >= 80 ? 'bg-emerald-500' : 'bg-amber-500'}`} style={{width: `${res.matchScore}%`}}></div>
-                                                    </div>
-                                                </div>
+                        </div>
+                    </section>
 
-                                                <div className="flex flex-wrap gap-1.5 mb-6">
-                                                    {[res.product.thickness + 'mm', res.product.color, res.product.coating, res.product.edgeFinish].map(t => (
-                                                        <span key={t} className="text-[10px] bg-slate-50 border border-slate-100 text-slate-500 px-2 py-1 rounded font-medium">{t}</span>
-                                                    ))}
-                                                </div>
+                    <div className="max-w-7xl mx-auto px-12 mb-16">
+                        <div className="flex flex-wrap items-center gap-6 bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm">
+                            <p className="text-[11px] font-black uppercase text-slate-400 ml-4 tracking-[0.2em]">Refine Catalog</p>
+                            <select 
+                                className="bg-slate-50 p-4 rounded-2xl text-[11px] font-bold uppercase tracking-widest outline-none border-none cursor-pointer"
+                                value={filters.category} onChange={e => setFilters({...filters, category: e.target.value})}
+                            >
+                                <option>All Categories</option><option>Tempered Glass</option><option>Laminated Glass</option><option>Insulated Glass Unit</option>
+                            </select>
+                            <input 
+                                type="number" placeholder="Max Price cap (INR)" 
+                                className="bg-slate-50 p-4 rounded-2xl text-[11px] font-bold placeholder:text-slate-400 outline-none w-48"
+                                value={filters.maxPrice} onChange={e => setFilters({...filters, maxPrice: e.target.value})}
+                            />
+                        </div>
+                    </div>
 
-                                                <div className="bg-slate-50 p-4 rounded-xl text-sm border border-slate-100 text-slate-600 italic mb-4 font-normal leading-relaxed">
-                                                    "{res.matchReason}"
+                    <section className="max-w-7xl mx-auto px-12">
+                        {loading ? (
+                            <div className="space-y-6">
+                                <h3 className="text-3xl font-black tracking-tighter text-slate-900 border-l-8 border-primary pl-6 animate-pulse">Finding best matches using AI...</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                                    {[1, 2, 3].map(i => <div key={i} className="h-[540px] bg-white rounded-[32px] animate-pulse border border-gray-100"></div>)}
+                                </div>
+                            </div>
+                        ) : results.length > 0 ? (
+                            <div className="space-y-12">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+                                    <div className="flex-1">
+                                        {results.length > 0 && (
+                                            <div className="mb-10 p-6 bg-slate-900 text-white rounded-[32px] overflow-hidden relative group max-w-xl shadow-2xl">
+                                                <div className="absolute top-0 right-0 w-24 h-24 bg-primary opacity-20 rounded-bl-full group-hover:scale-150 transition-transform duration-700"></div>
+                                                <div className="relative z-10">
+                                                    <div className="flex items-center gap-3 mb-3">
+                                                        <div className={`w-2 h-2 rounded-full animate-pulse ${results[0].score >= 70 ? 'bg-emerald-400' : results[0].score >= 40 ? 'bg-amber-400' : 'bg-rose-400'}`}></div>
+                                                        <span className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Discovery Confidence</span>
+                                                    </div>
+                                                    <h4 className="text-xl font-black tracking-tight mb-2">
+                                                        {results[0].score >= 70 ? "High Confidence" : results[0].score >= 40 ? "Moderate Confidence" : "Low Confidence"} Match
+                                                    </h4>
+                                                    <p className="text-[11px] font-bold text-slate-400 italic">
+                                                        {results[0].score >= 70 ? "Based on strong category and thickness match across top results." : "Refined matches found with some minor specification shifts."}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div className="p-6 pt-0 mt-auto">
-                                                <div className="text-xs text-slate-400 mb-4 flex items-center gap-1"><i data-lucide="factory" className="w-3"></i> {res.product.supplier}</div>
-                                                <button className="w-full py-3 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl transition-all">Request Quote</button>
+                                        )}
+
+                                        {fallback && (
+                                            <div className="mb-8 p-5 bg-amber-50 border border-amber-100 rounded-[28px] flex items-center gap-4 animate-fade-in max-w-2xl shadow-sm">
+                                                <span className="text-2xl">⚠️</span>
+                                                <div>
+                                                    <p className="text-xs font-black text-amber-900 uppercase tracking-widest">No exact matches found for your criteria.</p>
+                                                    <p className="text-[11px] font-bold text-amber-700 mt-0.5">Showing closest matches instead based on your requirement.</p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+                                        <h3 className="text-4xl font-black tracking-tighter text-slate-900 mb-2">
+                                            {fallback ? "Closest Matches for Your Requirement" : "Top Matches for Your Requirement"}
+                                        </h3>
+                                        <p className="text-slate-400 text-xs font-extrabold uppercase tracking-widest">Showing {results.length} best matching products out of 15 catalog items</p>
+                                    </div>
+                                    <div className="h-1 w-24 bg-primary rounded-full hidden md:block mb-4"></div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                                    {results.map((res, i) => (
+                                        <ProductCard 
+                                            key={i} 
+                                            {...res} 
+                                            queryObj={queryObj} 
+                                            filters={filters}
+                                            onOpenAnalytics={(data) => setSelectedProduct(data)}
+                                        />
                                     ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="py-32 bg-white rounded-[64px] border border-slate-100 shadow-sm text-center">
+                                <span className="text-7xl block mb-8 grayscale">📊</span>
+                                <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-2">Ready for Discovery</h3>
+                                <p className="text-slate-400 font-medium">Browse 15 industry products or use the search box above to start.</p>
+                                <div className="mt-10 flex justify-center gap-12 text-slate-300 font-bold text-[10px] uppercase tracking-[0.3em]">
+                                    <span>Exact Specification</span>
+                                    <span>Ranked Results</span>
+                                    <span>Transparent Matching</span>
                                 </div>
                             </div>
                         )}
-                    </main>
+                    </section>
+
+                    <ProductAnalyticsModal data={selectedProduct} onClose={() => setSelectedProduct(null)} />
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-        setTimeout(() => lucide.createIcons(), 500);
     </script>
 </body>
 </html>

@@ -1,182 +1,227 @@
 export const PRODUCTS = [
   {
-    id: 1,
-    name: "6mm Clear Tempered Glass",
-    category: "Tempered Glass",
-    thickness: 6,
-    dimensions: "2440 x 1830 mm",
-    color: "Clear",
-    coating: "None",
-    edgeFinish: "Polished",
-    certifications: ["IS 2553", "CE Certified"],
-    supplier: "Asahi India Glass (AIS)",
-    pricePerSqm: 950,
-    description: "High-strength safety glass designed for interior office partitions and shower cubicles. It offers superior impact resistance and breaks into small blunt pieces to ensure user safety.",
-    tags: ["office partition", "safety glass", "interior", "toughened"]
+    "productName": "6mm Clear Tempered Glass",
+    "category": "Tempered Glass",
+    "specifications": {
+      "thickness": "6mm",
+      "dimensions": "2.44m x 1.83m",
+      "color": "Clear",
+      "coating": "None",
+      "certification": "IS 2553 / CE Certified",
+      "edgeFinish": "Polished"
+    },
+    "supplierManufacturer": "Asahi India Glass (AIS)",
+    "price": "₹950 per sqm",
+    "description": "Durable safety glass for modern office partitions and residential windows. Offers superior impact resistance for high-traffic commercial shower cubicles and security glazing."
   },
   {
-    id: 2,
-    name: "12mm Extra Clear Toughened Glass",
-    category: "Tempered Glass",
-    thickness: 12,
-    dimensions: "3660 x 2440 mm",
-    color: "Clear",
-    coating: "None",
-    edgeFinish: "Polished",
-    certifications: ["IS 2553 Platinum", "ISO 9001"],
-    supplier: "Saint-Gobain India Ltd",
-    pricePerSqm: 2100,
-    description: "Premium heavy-duty glass ideal for frameless glass doors and high-end storefront displays. Its high transparency ensures maximum visibility while providing structural integrity for large spans.",
-    tags: ["storefront", "frameless door", "luxury retail", "heavy duty"]
+    "productName": "12mm Extra Clear Toughened Glass",
+    "category": "Tempered Glass",
+    "specifications": {
+      "thickness": "12mm",
+      "dimensions": "3.66m x 2.44m",
+      "color": "Extra Clear",
+      "coating": "None",
+      "certification": "IS 2553 Platinum / ISO 9001",
+      "edgeFinish": "Polished"
+    },
+    "supplierManufacturer": "Saint-Gobain India Ltd",
+    "price": "₹2100 per sqm",
+    "description": "High-transparency structural glass for frameless commercial doors and upscale facade elements. Perfect for luxury retail storefronts and residential deck railings with maximum visibility."
   },
   {
-    id: 3,
-    name: "10.76mm Clear Laminated Safety Glass",
-    category: "Laminated Glass",
-    thickness: 10.76,
-    dimensions: "custom",
-    color: "Clear",
-    coating: "UV Protection",
-    edgeFinish: "Seamed",
-    certifications: ["IS 2553 Part 2", "SGCC"],
-    supplier: "Gold Plus Glass Industry",
-    pricePerSqm: 1850,
-    description: "Comprises two layers of 5mm glass bonded with a 0.76mm PVB interlayer for enhanced security. Perfect for balcony railings and skylights where fall protection and acoustic insulation are critical.",
-    tags: ["balcony railing", "security glass", "skylight", "acoustic insulation"]
+    "productName": "10.76mm Clear Laminated Safety Glass",
+    "category": "Laminated Glass",
+    "specifications": {
+      "thickness": "10.76mm",
+      "dimensions": "Custom Sizes",
+      "color": "Clear",
+      "coating": "UV Protection",
+      "certification": "IS 2553 Part 2 / SGCC",
+      "edgeFinish": "Seamed"
+    },
+    "supplierManufacturer": "Gold Plus Glass Industry",
+    "price": "₹1850 per sqm",
+    "description": "Advanced security glass for residential balcony railing and commercial skylights. Provides essential acoustic insulation and fall protection for high-performance windows."
   },
   {
-    id: 4,
-    name: "24mm Double Glazed Insulated Unit",
-    category: "Insulated Glass Unit",
-    thickness: 24,
-    dimensions: "custom",
-    color: "Clear",
-    coating: "Low-E",
-    edgeFinish: "Seamed",
-    certifications: ["IGCC Certified", "IS 16231"],
-    supplier: "Sisecam Flat Glass India",
-    pricePerSqm: 3200,
-    description: "Energy-efficient IGU featuring a 6mm Low-E pane and a 12mm air gap for superior thermal insulation. It significantly reduces heat gain in residential windows while maintaining optimal natural light.",
-    tags: ["energy efficient", "residential windows", "thermal insulation", "green building"]
+    "productName": "5mm Silver Mirror",
+    "category": "Mirror",
+    "specifications": {
+      "thickness": "5mm",
+      "dimensions": "2.44m x 1.83m",
+      "color": "Clear",
+      "coating": "Anti-Corrosive Silvering",
+      "certification": "ISO 14001",
+      "edgeFinish": "Bevelled"
+    },
+    "supplierManufacturer": "ModiGuard Glass",
+    "price": "₹750 per sqm",
+    "description": "Distortion-free silver mirror for residential interior decor and high-end hospitality wall cladding. Built for long-term clarity in humid commercial environments and bathroom partitions."
   },
   {
-    id: 5,
-    name: "5mm Silver Mirror",
-    category: "Mirror",
-    thickness: 5,
-    dimensions: "2440 x 1830 mm",
-    color: "Clear",
-    coating: "Anti-Corrosive Silvering",
-    edgeFinish: "Bevelled",
-    certifications: ["ISO 14001"],
-    supplier: "ModiGuard Glass",
-    pricePerSqm: 750,
-    description: "High-definition silver mirror with copper-free coating to prevent edge corrosion in humid environments. Ideal for bathroom vanities and decorative wall cladding in hospitality projects.",
-    tags: ["interior decor", "bathroom mirror", "wall cladding", "hospitality"]
+    "productName": "8mm Bronze Tinted Float Glass",
+    "category": "Float Glass",
+    "specifications": {
+      "thickness": "8mm",
+      "dimensions": "3.05m x 2.14m",
+      "color": "Bronze Tint",
+      "coating": "None",
+      "certification": "IS 14900",
+      "edgeFinish": "Seamed"
+    },
+    "supplierManufacturer": "Hindusthan National Glass",
+    "price": "₹1150 per sqm",
+    "description": "Elegant tinted glass for sophisticated commercial facade glazing and large residential windows. Reduces glare naturally, making it ideal for sleek office partitions and luxury tabletops."
   },
   {
-    id: 6,
-    name: "8mm Bronze Tinted Float Glass",
-    category: "Float Glass",
-    thickness: 8,
-    dimensions: "3050 x 2140 mm",
-    color: "Bronze Tint",
-    coating: "None",
-    edgeFinish: "Seamed",
-    certifications: ["IS 14900"],
-    supplier: "Hindusthan National Glass",
-    pricePerSqm: 1150,
-    description: "Aesthetically pleasing tinted glass that reduces glare and solar heat gain without the need for additional coatings. Common use cases include exterior facades and tabletop surfaces for a sophisticated look.",
-    tags: ["facade", "solar control", "tabletop", "aesthetic"]
+    "productName": "Heavy Duty Floor Spring (90kg)",
+    "category": "Aluminium Hardware",
+    "specifications": {
+      "thickness": "N/A",
+      "dimensions": "Standard Fit",
+      "color": "Satin Stainless",
+      "coating": "Anti-Rust",
+      "certification": "EN 1154 / UL Listed",
+      "edgeFinish": "Fine Polished"
+    },
+    "supplierManufacturer": "Dorma India",
+    "price": "₹4500 per unit",
+    "description": "Heavy-duty hydraulic floor spring for commercial entrance doors and structural glass office partitions. Ensures smooth, reliable operation for high-traffic residential lobby entrances."
   },
   {
-    id: 7,
-    name: "Heavy Duty Floor Spring (90kg)",
-    category: "Aluminium Hardware",
-    thickness: 0,
-    dimensions: "standard",
-    color: "Satin Stainless",
-    coating: "Anti-Rust",
-    edgeFinish: "Fine Polished",
-    certifications: ["EN 1154", "UL Listed"],
-    supplier: "Dorma India",
-    pricePerSqm: 4500,
-    description: "Reliable hydraulic floor spring designed for heavy toughened glass doors up to 90kg. Features adjustable closing speeds and a hold-open function for high-traffic commercial entrances.",
-    tags: ["door hardware", "commercial entrance", "floor spring", "glass door hardware"]
+    "productName": "Four-Way Spider Fitting",
+    "category": "Aluminium Hardware",
+    "specifications": {
+      "thickness": "N/A",
+      "dimensions": "200mm Arm",
+      "color": "Stainless Steel",
+      "coating": "None",
+      "certification": "AISI 316 Grade",
+      "edgeFinish": "Mirror Finish"
+    },
+    "supplierManufacturer": "Ozone Overseas",
+    "price": "₹1200 per unit",
+    "description": "Architectural stainless steel fittings for point-fixed commercial facade curtains and structural canopies. Enables a minimalist glass design for upscale residential and office partitions."
   },
   {
-    id: 8,
-    name: "Four-Way Spider Fitting",
-    category: "Spider Fittings",
-    thickness: 0,
-    dimensions: "200mm arm length",
-    color: "Stainless Steel",
-    coating: "None",
-    edgeFinish: "Mirror Finish",
-    certifications: ["AISI 316 Grade"],
-    supplier: "Ozone Overseas",
-    pricePerSqm: 1200,
-    description: "High-grade stainless steel spider fittings for point-fixed structural glass curtains and canopies. Provides a minimalist architectural look while securely distributing wind loads across large glass panels.",
-    tags: ["structural glazing", "canopy", "architectural hardware", "point fixed"]
+    "productName": "6mm Acid Etched Frosted Toughened Glass",
+    "category": "Tempered Glass",
+    "specifications": {
+      "thickness": "6mm",
+      "dimensions": "2.44m x 1.83m",
+      "color": "Frosted",
+      "coating": "Anti-Fingerprint",
+      "certification": "IS 2553",
+      "edgeFinish": "Polished"
+    },
+    "supplierManufacturer": "Saint-Gobain India Ltd",
+    "price": "₹1400 per sqm",
+    "description": "Premium privacy glass for stylish office partitions and residential bathroom windows. Offers elegant light diffusion for sophisticated commercial cabin and interior design."
   },
   {
-    id: 9,
-    name: "6mm Acid Etched Frosted Toughened Glass",
-    category: "Tempered Glass",
-    thickness: 6,
-    dimensions: "2440 x 1830 mm",
-    color: "Frosted",
-    coating: "Anti-Fingerprint",
-    edgeFinish: "Polished",
-    certifications: ["IS 2553"],
-    supplier: "Saint-Gobain India Ltd",
-    pricePerSqm: 1400,
-    description: "Elegant frosted glass that provides 100% privacy while allowing soft diffused light to pass through. The acid-etched surface is easy to clean and resistant to stains, making it ideal for cabin partitions.",
-    tags: ["privacy glass", "office cabin", "diffused light", "interior design"]
+    "productName": "19.52mm SGP Laminated Glass",
+    "category": "Laminated Glass",
+    "specifications": {
+      "thickness": "(10+1.52SGP+10)",
+      "dimensions": "Custom Sizes",
+      "color": "Clear",
+      "coating": "Anti-Reflective",
+      "certification": "ASTM C1172 / Impact Rated",
+      "edgeFinish": "Polished"
+    },
+    "supplierManufacturer": "Asahi India Glass (AIS)",
+    "price": "₹8500 per sqm",
+    "description": "Ultra-tough structural laminate for high-security commercial facade floors and hurricane-resistant windows. Optimized for structural glass stairs and heavy-duty balcony railing systems."
   },
   {
-    id: 10,
-    name: "19.52mm SentryGlas Laminated Glass",
-    category: "Laminated Glass",
-    thickness: 19.52,
-    dimensions: "custom",
-    color: "Clear",
-    coating: "Anti-Reflective",
-    edgeFinish: "Polished",
-    certifications: ["ASTM C1172", "Impact Rated"],
-    supplier: "Asahi India Glass (AIS)",
-    pricePerSqm: 8500,
-    description: "Ultra-tough structural laminate using SGP ionoplast interlayer for maximum strength and edge stability. Specifically engineered for glass floors, stairs, and hurricane-resistant blast glazing.",
-    tags: ["glass floor", "structural glass", "stairs", "high security"]
+    "productName": "Patch Fitting Set for Glass Doors",
+    "category": "Aluminium Hardware",
+    "specifications": {
+      "thickness": "N/A",
+      "dimensions": "Standard",
+      "color": "Silver Anodized",
+      "coating": "None",
+      "certification": "ISO 9001",
+      "edgeFinish": "Brushed"
+    },
+    "supplierManufacturer": "Hardwyn India",
+    "price": "₹2800 per set",
+    "description": "Essential patch fitting kit for modern office partitions and frameless glass windows. Provides a sleek, industrial look with long-lasting residential entrance durability."
   },
   {
-    id: 11,
-    name: "Patch Fitting Set for Glass Doors",
-    category: "Aluminium Hardware",
-    thickness: 0,
-    dimensions: "standard",
-    color: "Silver Anodized",
-    coating: "None",
-    edgeFinish: "Brushed",
-    certifications: ["ISO 9001"],
-    supplier: "Hardwyn India",
-    pricePerSqm: 2800,
-    description: "A complete set of top and bottom patch fittings for standard 10mm to 12mm toughened glass doors. Made from high-quality aluminum alloy to ensure smooth pivot operation and long-lasting durability.",
-    tags: ["patch fitting", "glass door", "office entrance", "hardware kit"]
+    "productName": "6mm Solar Control Blue Tinted Glass",
+    "category": "Float Glass",
+    "specifications": {
+      "thickness": "6mm",
+      "dimensions": "3.3m x 2.14m",
+      "color": "Blue Tint",
+      "coating": "Sun Control",
+      "certification": "IS 16231 / CE",
+      "edgeFinish": "Seamed"
+    },
+    "supplierManufacturer": "Gold Plus Glass Industry",
+    "price": "₹1350 per sqm",
+    "description": "Body-tinted solar glass for high-performance commercial facade envelopes. Helps maintain cool interior temperatures in residential windows while reducing annoying glare."
   },
   {
-    id: 12,
-    name: "6mm Solar Control Blue Tinted Glass",
-    category: "Float Glass",
-    thickness: 6,
-    dimensions: "3300 x 2140 mm",
-    color: "Blue Tint",
-    coating: "Sun Control",
-    edgeFinish: "Seamed",
-    certifications: ["IS 16231", "CE"],
-    supplier: "Gold Plus Glass Industry",
-    pricePerSqm: 1350,
-    description: "Advanced body-tinted glass designed to filter out solar infrared radiation and keep interiors cool. It is an economical solution for modern building envelopes to reduce air conditioning costs.",
-    tags: ["solar control", "facade", "commercial building", "tinted glass"]
+    "productName": "19mm Extra Clear Toughened Glass",
+    "category": "Tempered Glass",
+    "specifications": {
+      "thickness": "19mm",
+      "dimensions": "2.44m x 3.66m",
+      "color": "Extra Clear",
+      "coating": "None",
+      "certification": "IS 2553 / EN 12150",
+      "edgeFinish": "Flat Polished"
+    },
+    "supplierManufacturer": "Saint-Gobain Glass India",
+    "price": "₹4200 per sqm",
+    "description": "Maximum-duty structural glass for high-profile commercial facade systems and office partitions. Provides unmatched clarity and load-bearing safety for premium residential window walls."
+  },
+  {
+    "productName": "24mm Blue Low-E Double Glazed Unit",
+    "category": "Insulated Glass Unit",
+    "specifications": {
+      "thickness": "(6+12Ar+6)",
+      "dimensions": "2.14m x 3.05m",
+      "color": "Atlantic Blue",
+      "coating": "Double Silver Low-E",
+      "certification": "ASTM E2190",
+      "edgeFinish": "Seamed"
+    },
+    "supplierManufacturer": "Gold Plus Glass Industry",
+    "price": "₹3150 per sqm",
+    "description": "Advanced energy-efficient glass for skyscraper facade systems and luxury residential windows. Designed to maximize occupant comfort while minimizing commercial HVAC energy consumption."
+  },
+  {
+    "productName": "11.52mm SGP Laminated Safety Glass",
+    "category": "Laminated Glass",
+    "specifications": {
+      "thickness": "(5+1.52SGP+5)",
+      "dimensions": "1.83m x 2.44m",
+      "color": "Clear",
+      "coating": "UV Protection Interlayer",
+      "certification": "EN 14449 / ANSI Z97.1",
+      "edgeFinish": "Machine Polished"
+    },
+    "supplierManufacturer": "Asahi India Glass (AIS)",
+    "price": "₹8200 per sqm",
+    "description": "High-impact laminate for modern residential balcony railing and commercial lobby features. Offers superior post-breakage security for architectural office partitions and glass flooring."
+  },
+  {
+    "productName": "4mm Clear Float Glass",
+    "category": "Float Glass",
+    "specifications": {
+      "thickness": "4mm",
+      "dimensions": "2.44m x 1.83m",
+      "color": "Clear",
+      "coating": "None",
+      "certification": "IS 14900",
+      "edgeFinish": "Seamed"
+    },
+    "supplierManufacturer": "Asahi India Glass (AIS)",
+    "price": "₹650 per sqm",
+    "description": "Budget-friendly clear glass for residential windows and basic glazing projects. Provides high light transmission for commercial cabinet doors and picture framing applications."
   }
 ];

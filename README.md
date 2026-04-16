@@ -1,59 +1,156 @@
 # AmalGus Smart Product Discovery
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq-Llama_3_70B-orange?style=for-the-badge)
-
-**Find the Right Glass, Instantly.** An AI-powered B2B marketplace prototype that uses LLM-based semantic matching to solve complex architectural glass procurement.
+**Find the Right Glass, Instantly.**
+An AI-powered B2B marketplace prototype that enables intelligent product discovery and supplier matching for glass and allied materials.
 
 ---
 
 ## 🛠️ Tech Stack
-- **Frontend**: React 18 (Client-side Rendering)
-- **Styling**: Tailwind CSS
-- **Intelligence**: Groq API (Llama-3-70b-8192) for ultra-fast matching
-- **Icons**: Lucide React
+
+* **Frontend**: React 18
+* **Styling**: Tailwind CSS
+* **AI Integration**: Groq API (Llama 3)
+* **Icons**: Lucide React
+
+---
 
 ## 🚀 How to Run Locally
 
-1. **Clone & Install**: `npm install`
-2. **Configure Env**: Create `.env` with:
-   ```env
-   VITE_GROQ_API_KEY=your_groq_key_here
-   ```
-3. **Run**: `npm run dev`
+1. Install dependencies
 
-## 🧠 How the Intelligent Matching Works
+```bash
+npm install
+```
 
-AmalGus moves beyond traditional keyword search by implementing a **"Claude-in-Claude" architecture** for semantic discovery.
+2. Create `.env` file
 
-### LLM-Based Ranking
-Instead of simple partial-string matching, the system understands the *intent* and *context* of a buyer's query. When a user asks for "safety glass for high-rise balconies," the AI understands that this implies a need for **Laminated Glass** or **Tempered Glass** with specific wind-load and safety certifications, even if those words aren't in the query.
+```env
+VITE_GROQ_API_KEY=your_groq_key_here
+```
 
-### Why Claude Over Embeddings?
-For this prototype, we opted for **Direct LLM Scoring** over Vector Embeddings because:
-- **Precision**: LLMs can evaluate specific technical constraints (like thickness and price caps) more reliably than cosine similarity.
-- **Explainability**: Claude generates a `matchReason`, providing transparency to the user on *why* a product was recommended.
-- **Zero-Shot Flexibility**: No need to maintain an embedding database or handle complex indexing for a small, high-value catalog.
+3. Start development server
 
-### Two-Phase Pipeline
-1. **Hard Filtering**: The app first filters the local JavaScript catalog by Category, Max Price, and Thickness.
-2. **AI Scoring**: The narrowed subset is sent to Claude 3.5 Sonnet to perform a multi-factor analysis and return a sorted JSON array of the top 5 matches with match scores (0-100%).
-
-## 🤖 AI Tools Used
-- **Claude 3.5 Sonnet**: The core intelligence engine used to rank products and generate technical justifications.
-- **Antigravity AI / v0**: Used for rapid UI scaffolding and implementing the professional B2B "SaaS" aesthetics.
-
-## ⚖️ Key Assumptions & Trade-offs
-- **Mock Data**: Uses a hardcoded `products.js` file instead of a real-time database to maximize prototyping speed.
-- **Client-Side API Calls**: Currently, the Anthropic API is called directly from the browser. **Note: This is not production-safe.** In a production environment, this key must be moved to a backend proxy to protect API credentials.
-- **Latency**: AI-based discovery takes ~2–3 seconds per query. While slower than keyword search, the high precision and recommendation quality are prioritized for the B2B context.
-
-## 📈 Potential Improvements
-- **Backend Proxy**: Implement a Node.js/FastAPI backend to secure API keys and handle rate limiting.
-- **Vector Database**: Integrate Pinecone or Weaviate for handling massive catalogs (10,000+ SKUs).
-- **Session Caching**: Cache common queries to provide instantaneous results for repetitive lookups.
-- **Multi-Supplier RFQ**: Integration with a real RFQ (Request for Quote) system to bridge search with procurement.
+```bash
+npm run dev
+```
 
 ---
-*Built with ❤️ for the Glass Industry.*
+
+## 🧠 How Intelligent Matching Works
+
+This system implements a **hybrid AI + rule-based matching engine** designed specifically for glass industry use cases.
+
+---
+
+### 1️⃣ Query Understanding (AI Parser)
+
+User input (natural language):
+
+> “6mm tempered glass for office partitions”
+
+Is converted into structured data:
+
+```json
+{
+  "category": "Tempered Glass",
+  "thickness": "6mm",
+  "useCase": "office partitions",
+  "color": "Clear"
+}
+```
+
+The parser also:
+
+* Adds **synonyms (tempered = toughened)**
+* Applies **tolerance (±0.5mm)**
+* Assigns **importance weights**
+
+---
+
+### 2️⃣ Weighted Matching Engine (Core Logic)
+
+Each product is scored using a **weighted scoring system**:
+
+* Category match → highest priority
+* Thickness match → high
+* Use-case match → medium
+* Dimensions → flexible
+* Color → lower priority
+
+Final score:
+
+```
+Score = Weighted Sum of Matches (0–100%)
+```
+
+---
+
+### 3️⃣ Intelligent Ranking
+
+* All products are evaluated
+* Sorted by match score
+* Top 5 results returned
+
+---
+
+### 4️⃣ Explainable Results
+
+Each result includes:
+
+* ✅ Match Score (e.g., 87%)
+* ✅ Explanation (why it matched)
+
+Example:
+
+> “Matches required thickness and is suitable for office partitions.”
+
+---
+
+## 🤖 AI Usage
+
+* **Groq (Llama 3)**:
+
+  * Used for parsing natural language queries
+  * Enhances semantic understanding
+
+* **Antigravity AI / v0**:
+
+  * Used for rapid UI development and layout
+
+---
+
+## ⚖️ Key Design Decisions
+
+### Why Hybrid Approach (AI + Logic)?
+
+* AI handles **understanding intent**
+* Rule-based system ensures **consistent scoring**
+* Better control compared to pure LLM ranking
+
+---
+
+## ⚖️ Assumptions & Trade-offs
+
+* Uses **mock dataset (15 products)**
+* Matching runs **client-side for speed**
+* No database or embeddings (kept lightweight for prototype)
+
+---
+
+## 📈 Future Improvements
+
+* Backend API for secure AI calls
+* Vector search (FAISS / Pinecone) for large catalogs
+* Advanced filtering (price range, certifications)
+* Real supplier integration (RFQ system)
+
+---
+
+## 🎯 Key Highlights
+
+* Natural language → structured query
+* Weighted intelligent matching
+* Explainable AI recommendations
+* Real-world glass industry relevance
+
+---
