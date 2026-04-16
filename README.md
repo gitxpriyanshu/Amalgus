@@ -2,45 +2,26 @@
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Anthropic Claude](https://img.shields.io/badge/Claude_3.5_Sonnet-D1D5DB?style=for-the-badge&logo=anthropic&logoColor=black)
+![Groq](https://img.shields.io/badge/Groq-Llama_3_70B-orange?style=for-the-badge)
 
 **Find the Right Glass, Instantly.** An AI-powered B2B marketplace prototype that uses LLM-based semantic matching to solve complex architectural glass procurement.
 
 ---
 
-## 🔗 Live Demo
-[Check out the Live Prototype (Vercel/Netlify Placeholder)](#)
-
 ## 🛠️ Tech Stack
 - **Frontend**: React 18 (Client-side Rendering)
-- **Styling**: Tailwind CSS (Executive Professional Aesthetic)
-- **Intelligence**: Anthropic Claude API (3.5 Sonnet)
+- **Styling**: Tailwind CSS
+- **Intelligence**: Groq API (Llama-3-70b-8192) for ultra-fast matching
 - **Icons**: Lucide React
-- **Development**: Vite
 
 ## 🚀 How to Run Locally
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/gitxpriyanshu/Amalgus.git
-   cd Amalgus
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory and add your Anthropic API Key:
+1. **Clone & Install**: `npm install`
+2. **Configure Env**: Create `.env` with:
    ```env
-   VITE_ANTHROPIC_API_KEY=your_anthropic_api_key_here
+   VITE_GROQ_API_KEY=your_groq_key_here
    ```
-
-4. **Start the Development Server**:
-   ```bash
-   npm run dev
-   ```
+3. **Run**: `npm run dev`
 
 ## 🧠 How the Intelligent Matching Works
 

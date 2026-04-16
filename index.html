@@ -46,12 +46,11 @@
         ];
 
         async function findBestMatches(userQuery, products) {
-            const API_URL = "https://api.anthropic.com/v1/messages";
-            // Mocking env read for this CDN version, but logic matches user request
-            const API_KEY = window.VITE_ANTHROPIC_API_KEY || ""; 
+            const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+            const API_KEY = window.VITE_GROQ_API_KEY || ""; 
 
             if (!API_KEY) {
-                console.warn("API Key missing. Returning mock data for UI demo.");
+                console.warn("Groq API Key missing. Returning mock data.");
                 return products.slice(0, 3).map(p => ({ id: p.id, matchScore: 95, matchReason: "High relevance to your structural safety needs." }));
             }
 
@@ -59,20 +58,21 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "x-api-key": API_KEY,
-                    "anthropic-version": "2023-06-01",
-                    "dangerously-allow-the-browser": "true"
+                    "Authorization": `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: "claude-3-5-sonnet-20240620",
-                    max_tokens: 1500,
-                    system: `You are an AmalGus consultant. Score these products 0-100 based on the query. Return ONLY a JSON array: [{id, matchScore, matchReason}]. Product Catalog: ${JSON.stringify(products)}`,
-                    messages: [{ role: "user", content: userQuery }],
-                    temperature: 0
+                    model: "llama3-70b-8192",
+                    messages: [
+                        { role: "system", content: `You are an AmalGus consultant. Score these products 0-100 based on the query. Return ONLY a JSON array: [{id, matchScore, matchReason}]. Catalog: ${JSON.stringify(products)}` },
+                        { role: "user", content: userQuery }
+                    ],
+                    temperature: 0,
+                    response_format: { type: "json_object" }
                 })
             });
             const data = await response.json();
-            return JSON.parse(data.content[0].text.trim());
+            const result = JSON.parse(data.choices[0].message.content);
+            return Array.isArray(result) ? result : (result.matches || Object.values(result)[0]);
         }
 
         const App = () => {

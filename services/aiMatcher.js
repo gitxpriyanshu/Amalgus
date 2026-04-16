@@ -1,33 +1,25 @@
 /**
- * Matches a user's natural language query against a catalog of glass products
- * using the Anthropic Claude API.
- * 
- * @param {string} userQuery - The buyer's natural language requirement.
- * @param {Array} products - The product catalog JSON array.
- * @returns {Promise<Array>} - Top 5 matching products with scores and reasons.
+ * Matcher service using Groq API (Llama-3-70b) for ultra-fast semantic discovery.
  */
 export async function findBestMatches(userQuery, products) {
-  const API_URL = "https://api.anthropic.com/v1/messages";
+  const API_URL = "https://api.groq.com/openai/v1/chat/completions";
   
   // Reading from Vite environment variable
-  const API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY;
+  const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
   const systemPrompt = `
-    You are an expert glass industry consultant for AmalGus, a B2B/B2C marketplace.
-    Your task is to match user requirements to the provided product catalog.
+    You are an expert glass industry consultant for AmalGus.
+    Task: Match user requirements to the product catalog below.
     
     PRODUCT CATALOG:
     ${JSON.stringify(products, null, 2)}
 
     INSTRUCTIONS:
-    1. Analyze the buyer's requirement carefully (consider use case, safety needs, thermal performance, and budget).
-    2. Score each product from 0-100 based on fit.
-    3. Factors: category relevance, thickness suitability, coating/certification requirements, and price sensitivity.
-    4. Return ONLY a valid JSON array of the top 5 matches.
-    5. Each object must have: { "id": number, "matchScore": number, "matchReason": string }
-    6. "matchReason" must be 1-2 concise sentences explaining the technical or functional rationale for the match.
-    
-    IMPORTANT: Respond ONLY with the JSON array. No markdown, no conversational text, no explanation outside the JSON.
+    1. Score each product 0-100 based on fit.
+    2. Return ONLY a valid JSON array of the top 5 matches.
+    3. Format: [{ "id": number, "matchScore": number, "matchReason": string }]
+    4. matchReason: 1-2 concise sentences.
+    5. Return ONLY JSON. No explanation.
   `;
 
   try {
@@ -35,39 +27,36 @@ export async function findBestMatches(userQuery, products) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": API_KEY,
-        "anthropic-version": "2023-06-01",
-        "dangerously-allow-the-browser": "true"
+        "Authorization": `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20240620",
-        max_tokens: 1500,
-        system: systemPrompt,
+        model: "llama3-70b-8192",
         messages: [
-          { role: "user", content: `Query: "${userQuery}"` }
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userQuery }
         ],
-        temperature: 0
+        temperature: 0,
+        response_format: { type: "json_object" }
       })
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`Claude API Error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Groq API Error: ${errorData.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
-    const rawText = data.content[0].text.trim();
+    const result = JSON.parse(data.choices[0].message.content);
     
-    // Parse the JSON array from the response
-    let matches = JSON.parse(rawText);
+    // Support either a top-level array or an object containing the array
+    const matchesList = Array.isArray(result) ? result : (result.matches || Object.values(result)[0]);
 
-    // Ensure it's sorted by matchScore descending and limited to top 5
-    return matches
+    return matchesList
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, 5);
 
   } catch (error) {
-    console.error("Failed to find best matches:", error);
+    console.error("Failed to find best matches via Groq:", error);
     return [];
   }
 }
