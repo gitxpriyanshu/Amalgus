@@ -77,16 +77,34 @@
             return "This product fits your general architectural requirements and category selection.";
         };
 
+        // --- BROWSER-SAFE ENV LOADER ---
+        let VITE_GROQ_API_KEY = "";
+        
+        async function loadEnv() {
+            try {
+                const resp = await fetch('.env');
+                const text = await resp.text();
+                const match = text.match(/VITE_GROQ_API_KEY=(.*)/);
+                if (match) VITE_GROQ_API_KEY = match[1].trim();
+            } catch (e) {
+                console.warn("Local .env could not be loaded. Ensure 'npx serve .' is running.");
+            }
+        }
+        loadEnv();
+
         async function parseQuery(query) {
-            // Hardcoded for static browser environment compatibility
-            const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-            
-            if(!API_KEY) {
-                console.error("Missing Groq API Key.");
+            if(!VITE_GROQ_API_KEY) {
+                // Try to reload once if missing
+                await loadEnv();
+            }
+
+            if(!VITE_GROQ_API_KEY) {
+                console.error("Missing VITE_GROQ_API_KEY. Please ensure it is set in .env.");
                 return { category: { primary: 'Float Glass' }, thickness: { value: '6mm' }, useCase: { value: 'partition' }, color: { value: 'Clear' } };
             }
+
             const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${API_KEY}` },
+                method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${VITE_GROQ_API_KEY}` },
                 body: JSON.stringify({
                     model: "llama-3.3-70b-versatile",
                     messages: [{ role: "system", content: "Parse glass query into JSON: category{primary, aliases[]}, thickness{value}, dimensions{target}, color{value}, useCase{value}, priceIntent. Return ONLY JSON." }, { role: "user", content: query }],
